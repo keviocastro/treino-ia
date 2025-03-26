@@ -3,7 +3,7 @@ import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select'
 import { Slider } from './components/ui/slider'
-import { Dumbbell, Activity, Clock } from 'lucide-react'
+import { Dumbbell, Activity, Clock, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 
 function App() {
@@ -57,37 +57,152 @@ function App() {
       setTrainingPlan(data)
     } catch (error) {
       console.error('Erro:', error)
-      setTrainingPlan({
-        workouts: [
-          {
-            name: "Treino A",
+      
+      const fallbackWorkouts = [];
+      const workoutNames = ["A", "B", "C", "D", "E", "F", "G"];
+      
+      for (let i = 0; i < Math.min(formData.training_days, workoutNames.length); i++) {
+        if (i === 0) {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
             exercises: [
               {
-                name: "Exercício abdominal completo",
-                target: "reto abdominal",
-                recurrence: "Alta",
-                level: "Iniciante",
+                name: "Supino reto com barra",
+                target: "peitoral",
+                level: formData.experience_level,
                 alternatives: [
-                  "abdominal completo com braços sobre o peito",
-                  "abdominal completo braços atrás da cabeça",
-                  "abdominal no chão"
-                ]
+                  "Supino inclinado com halteres",
+                  "Crucifixo na máquina",
+                  "Flexão de braço"
+                ],
+                series: 4,
+                repetitions: "8-12",
+                rest_time: 60
               },
               {
-                name: "Exercício tríceps na polia com corda",
-                target: "tríceps",
-                recurrence: "Alta",
-                level: "Iniciante",
+                name: "Crucifixo com halteres",
+                target: "peitoral",
+                level: formData.experience_level,
                 alternatives: [
-                  "tríceps na polia barra reta",
-                  "tríceps francês com halteres",
-                  "mergulho no banco"
-                ]
+                  "Crucifixo na máquina",
+                  "Crossover",
+                  "Flexão de braço"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              },
+              {
+                name: "Tríceps corda",
+                target: "tríceps",
+                level: formData.experience_level,
+                alternatives: [
+                  "Tríceps francês",
+                  "Tríceps testa",
+                  "Mergulho no banco"
+                ],
+                series: 3,
+                repetitions: "12-15",
+                rest_time: 45
               }
             ]
-          }
-        ]
-      })
+          });
+        } else if (i === 1) {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
+            exercises: [
+              {
+                name: "Puxada frontal",
+                target: "costas",
+                level: formData.experience_level,
+                alternatives: [
+                  "Remada curvada",
+                  "Puxada alta",
+                  "Remada unilateral"
+                ],
+                series: 3,
+                repetitions: "10-15",
+                rest_time: 60
+              },
+              {
+                name: "Remada baixa",
+                target: "costas",
+                level: formData.experience_level,
+                alternatives: [
+                  "Remada curvada",
+                  "Remada cavalinho",
+                  "Pull down"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              },
+              {
+                name: "Rosca direta",
+                target: "bíceps",
+                level: formData.experience_level,
+                alternatives: [
+                  "Rosca alternada",
+                  "Rosca martelo",
+                  "Rosca scott"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              }
+            ]
+          });
+        } else {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
+            exercises: [
+              {
+                name: "Agachamento livre",
+                target: "quadríceps",
+                level: formData.experience_level,
+                alternatives: [
+                  "Leg press",
+                  "Agachamento sumô",
+                  "Cadeira extensora"
+                ],
+                series: 4,
+                repetitions: "10-12",
+                rest_time: 60
+              },
+              {
+                name: "Stiff",
+                target: "posterior de coxa",
+                level: formData.experience_level,
+                alternatives: [
+                  "Mesa flexora",
+                  "Leg curl",
+                  "Cadeira flexora"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              },
+              {
+                name: "Desenvolvimento com halteres",
+                target: "ombros",
+                level: formData.experience_level,
+                alternatives: [
+                  "Elevação lateral",
+                  "Desenvolvimento máquina",
+                  "Crucifixo inverso"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              }
+            ]
+          });
+        }
+      }
+      
+      setTrainingPlan({
+        workouts: fallbackWorkouts
+      });
     } finally {
       setLoading(false)
     }
@@ -278,7 +393,12 @@ function App() {
                   onClick={generateTrainingPlan}
                   disabled={loading}
                 >
-                  {loading ? 'Gerando...' : 'Obter Ficha de Treino'}
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Gerando...
+                    </span>
+                  ) : 'Obter Ficha de Treino'}
                 </Button>
               </CardContent>
             </Card>
@@ -330,14 +450,20 @@ function App() {
                               <CardHeader className="bg-gray-50 pb-2">
                                 <CardTitle className="text-lg text-indigo-700">{exercise.name}</CardTitle>
                                 <div className="flex flex-wrap gap-2 text-sm">
-                                  <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
-                                    Recorrência: {exercise.recurrence}
-                                  </span>
                                   <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                                     Alvo: {exercise.target}
                                   </span>
                                   <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
                                     Nível: {exercise.level}
+                                  </span>
+                                  <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                    Séries: {exercise.series || 3}
+                                  </span>
+                                  <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                                    Repetições: {exercise.repetitions || "12-15"}
+                                  </span>
+                                  <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                                    Descanso: {exercise.rest_time || 60} seg
                                   </span>
                                 </div>
                               </CardHeader>

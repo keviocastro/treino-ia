@@ -28,9 +28,11 @@ app.add_middleware(
 class Exercise(BaseModel):
     name: str
     target: str
-    recurrence: str
     level: str
     alternatives: List[str]
+    series: Optional[int] = 3
+    repetitions: Optional[str] = "12-15"
+    rest_time: Optional[int] = 60  # em segundos
 
 class Workout(BaseModel):
     name: str
@@ -72,13 +74,15 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
         - Condição atual: {current_condition}
         
         Crie um plano de treino com {training_days} treinos diferentes (A, B, C, etc.).
-        Cada treino deve ter exercícios adequados para o nível de experiência e objetivo.
+        Cada treino deve focar em grupos musculares relacionados (ex: peito/tríceps, costas/bíceps, pernas/ombros).
         Para cada exercício, forneça:
         - Nome do exercício
         - Grupo muscular alvo
-        - Recorrência (Alta, Média, Baixa)
         - Nível de dificuldade
         - 3 exercícios alternativos
+        - Número de séries (normalmente entre 3-5)
+        - Número de repetições (ex: "8-12", "12-15", "15-20")
+        - Tempo de descanso entre séries (em segundos, normalmente entre 30-90)
         
         Responda apenas com um JSON no seguinte formato:
         {{
@@ -89,9 +93,11 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                         {{
                             "name": "Nome do exercício",
                             "target": "grupo muscular",
-                            "recurrence": "Alta/Média/Baixa",
                             "level": "Iniciante/Intermediário/Avançado",
-                            "alternatives": ["alternativa 1", "alternativa 2", "alternativa 3"]
+                            "alternatives": ["alternativa 1", "alternativa 2", "alternativa 3"],
+                            "series": 3,
+                            "repetitions": "12-15",
+                            "rest_time": 60
                         }}
                     ]
                 }}
@@ -125,37 +131,154 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
             
     except Exception as e:
         print(f"Error generating training plan: {str(e)}")
-        return TrainingPlanResponse(
-            workouts=[
-                Workout(
-                    name="Treino A",
-                    exercises=[
-                        Exercise(
-                            name="Supino reto com barra",
-                            target="peitoral",
-                            recurrence="Alta",
-                            level=request.experience_level,
-                            alternatives=[
-                                "Supino inclinado com halteres",
-                                "Crucifixo na máquina",
-                                "Flexão de braço"
-                            ]
-                        ),
-                        Exercise(
-                            name="Agachamento livre",
-                            target="quadríceps",
-                            recurrence="Alta",
-                            level=request.experience_level,
-                            alternatives=[
-                                "Leg press",
-                                "Agachamento sumô",
-                                "Cadeira extensora"
-                            ]
-                        )
-                    ]
+        
+        workout_names = ["A", "B", "C", "D", "E", "F", "G"]
+        fallback_workouts = []
+        
+        for i in range(min(request.training_days, len(workout_names))):
+            if i == 0:  # Treino A - Foco em peito e pernas
+                fallback_workouts.append(
+                    Workout(
+                        name=f"Treino {workout_names[i]}",
+                        exercises=[
+                            Exercise(
+                                name="Supino reto com barra",
+                                target="peitoral",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Supino inclinado com halteres",
+                                    "Crucifixo na máquina",
+                                    "Flexão de braço"
+                                ],
+                                series=4,
+                                repetitions="8-12",
+                                rest_time=60
+                            ),
+                            Exercise(
+                                name="Crucifixo com halteres",
+                                target="peitoral",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Crucifixo na máquina",
+                                    "Crossover",
+                                    "Flexão de braço"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
+                            ),
+                            Exercise(
+                                name="Tríceps corda",
+                                target="tríceps",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Tríceps francês",
+                                    "Tríceps testa",
+                                    "Mergulho no banco"
+                                ],
+                                series=3,
+                                repetitions="12-15",
+                                rest_time=45
+                            )
+                        ]
+                    )
                 )
-            ]
-        )
+            elif i == 1:  # Treino B - Foco em costas e ombros
+                fallback_workouts.append(
+                    Workout(
+                        name=f"Treino {workout_names[i]}",
+                        exercises=[
+                            Exercise(
+                                name="Puxada frontal",
+                                target="costas",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Remada curvada",
+                                    "Puxada alta",
+                                    "Remada unilateral"
+                                ],
+                                series=3,
+                                repetitions="10-15",
+                                rest_time=60
+                            ),
+                            Exercise(
+                                name="Remada baixa",
+                                target="costas",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Remada curvada",
+                                    "Remada cavalinho",
+                                    "Pull down"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
+                            ),
+                            Exercise(
+                                name="Rosca direta",
+                                target="bíceps",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Rosca alternada",
+                                    "Rosca martelo",
+                                    "Rosca scott"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
+                            )
+                        ]
+                    )
+                )
+            else:  # Treino C, D, etc. - Foco em braços e abdômen
+                fallback_workouts.append(
+                    Workout(
+                        name=f"Treino {workout_names[i]}",
+                        exercises=[
+                            Exercise(
+                                name="Agachamento livre",
+                                target="quadríceps",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Leg press",
+                                    "Agachamento sumô",
+                                    "Cadeira extensora"
+                                ],
+                                series=4,
+                                repetitions="10-12",
+                                rest_time=60
+                            ),
+                            Exercise(
+                                name="Stiff",
+                                target="posterior de coxa",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Mesa flexora",
+                                    "Leg curl",
+                                    "Cadeira flexora"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
+                            ),
+                            Exercise(
+                                name="Desenvolvimento com halteres",
+                                target="ombros",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Elevação lateral",
+                                    "Desenvolvimento máquina",
+                                    "Crucifixo inverso"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
+                            )
+                        ]
+                    )
+                )
+        
+        return TrainingPlanResponse(workouts=fallback_workouts)
 
 @app.get("/")
 async def root():
