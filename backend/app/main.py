@@ -28,12 +28,11 @@ app.add_middleware(
 class Exercise(BaseModel):
     name: str
     target: str
-    recurrence: str
     level: str
     alternatives: List[str]
     series: Optional[int] = 3
     repetitions: Optional[str] = "12-15"
-    estimated_time: Optional[int] = 5  # em minutos
+    rest_time: Optional[int] = 60  # em segundos
 
 class Workout(BaseModel):
     name: str
@@ -75,16 +74,15 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
         - Condição atual: {current_condition}
         
         Crie um plano de treino com {training_days} treinos diferentes (A, B, C, etc.).
-        Cada treino deve ter exercícios adequados para o nível de experiência e objetivo.
+        Cada treino deve focar em grupos musculares relacionados (ex: peito/tríceps, costas/bíceps, pernas/ombros).
         Para cada exercício, forneça:
         - Nome do exercício
         - Grupo muscular alvo
-        - Recorrência (Alta, Média, Baixa)
         - Nível de dificuldade
         - 3 exercícios alternativos
         - Número de séries (normalmente entre 3-5)
         - Número de repetições (ex: "8-12", "12-15", "15-20")
-        - Tempo estimado para completar o exercício (em minutos)
+        - Tempo de descanso entre séries (em segundos, normalmente entre 30-90)
         
         Responda apenas com um JSON no seguinte formato:
         {{
@@ -95,12 +93,11 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                         {{
                             "name": "Nome do exercício",
                             "target": "grupo muscular",
-                            "recurrence": "Alta/Média/Baixa",
                             "level": "Iniciante/Intermediário/Avançado",
                             "alternatives": ["alternativa 1", "alternativa 2", "alternativa 3"],
                             "series": 3,
                             "repetitions": "12-15",
-                            "estimated_time": 5
+                            "rest_time": 60
                         }}
                     ]
                 }}
@@ -147,7 +144,6 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                             Exercise(
                                 name="Supino reto com barra",
                                 target="peitoral",
-                                recurrence="Alta",
                                 level=request.experience_level,
                                 alternatives=[
                                     "Supino inclinado com halteres",
@@ -156,21 +152,33 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                 ],
                                 series=4,
                                 repetitions="8-12",
-                                estimated_time=8
+                                rest_time=60
                             ),
                             Exercise(
-                                name="Agachamento livre",
-                                target="quadríceps",
-                                recurrence="Alta",
+                                name="Crucifixo com halteres",
+                                target="peitoral",
                                 level=request.experience_level,
                                 alternatives=[
-                                    "Leg press",
-                                    "Agachamento sumô",
-                                    "Cadeira extensora"
+                                    "Crucifixo na máquina",
+                                    "Crossover",
+                                    "Flexão de braço"
                                 ],
-                                series=4,
+                                series=3,
                                 repetitions="10-12",
-                                estimated_time=10
+                                rest_time=45
+                            ),
+                            Exercise(
+                                name="Tríceps corda",
+                                target="tríceps",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Tríceps francês",
+                                    "Tríceps testa",
+                                    "Mergulho no banco"
+                                ],
+                                series=3,
+                                repetitions="12-15",
+                                rest_time=45
                             )
                         ]
                     )
@@ -183,7 +191,6 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                             Exercise(
                                 name="Puxada frontal",
                                 target="costas",
-                                recurrence="Alta",
                                 level=request.experience_level,
                                 alternatives=[
                                     "Remada curvada",
@@ -192,21 +199,33 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                 ],
                                 series=3,
                                 repetitions="10-15",
-                                estimated_time=7
+                                rest_time=60
                             ),
                             Exercise(
-                                name="Desenvolvimento com halteres",
-                                target="ombros",
-                                recurrence="Alta",
+                                name="Remada baixa",
+                                target="costas",
                                 level=request.experience_level,
                                 alternatives=[
-                                    "Elevação lateral",
-                                    "Desenvolvimento máquina",
-                                    "Crucifixo inverso"
+                                    "Remada curvada",
+                                    "Remada cavalinho",
+                                    "Pull down"
                                 ],
                                 series=3,
                                 repetitions="10-12",
-                                estimated_time=6
+                                rest_time=45
+                            ),
+                            Exercise(
+                                name="Rosca direta",
+                                target="bíceps",
+                                level=request.experience_level,
+                                alternatives=[
+                                    "Rosca alternada",
+                                    "Rosca martelo",
+                                    "Rosca scott"
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                rest_time=45
                             )
                         ]
                     )
@@ -217,46 +236,43 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                         name=f"Treino {workout_names[i]}",
                         exercises=[
                             Exercise(
-                                name="Rosca direta",
-                                target="bíceps",
-                                recurrence="Alta",
+                                name="Agachamento livre",
+                                target="quadríceps",
                                 level=request.experience_level,
                                 alternatives=[
-                                    "Rosca alternada",
-                                    "Rosca martelo",
-                                    "Rosca scott"
+                                    "Leg press",
+                                    "Agachamento sumô",
+                                    "Cadeira extensora"
                                 ],
-                                series=3,
-                                repetitions="10-15",
-                                estimated_time=5
+                                series=4,
+                                repetitions="10-12",
+                                rest_time=60
                             ),
                             Exercise(
-                                name="Tríceps corda",
-                                target="tríceps",
-                                recurrence="Alta",
+                                name="Stiff",
+                                target="posterior de coxa",
                                 level=request.experience_level,
                                 alternatives=[
-                                    "Tríceps francês",
-                                    "Tríceps testa",
-                                    "Mergulho no banco"
+                                    "Mesa flexora",
+                                    "Leg curl",
+                                    "Cadeira flexora"
                                 ],
                                 series=3,
-                                repetitions="12-15",
-                                estimated_time=5
+                                repetitions="10-12",
+                                rest_time=45
                             ),
                             Exercise(
-                                name="Abdominal infra",
-                                target="abdômen",
-                                recurrence="Média",
+                                name="Desenvolvimento com halteres",
+                                target="ombros",
                                 level=request.experience_level,
                                 alternatives=[
-                                    "Prancha",
-                                    "Abdominal crunch",
-                                    "Elevação de pernas"
+                                    "Elevação lateral",
+                                    "Desenvolvimento máquina",
+                                    "Crucifixo inverso"
                                 ],
                                 series=3,
-                                repetitions="15-20",
-                                estimated_time=4
+                                repetitions="10-12",
+                                rest_time=45
                             )
                         ]
                     )

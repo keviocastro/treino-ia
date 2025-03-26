@@ -67,32 +67,43 @@ function App() {
             name: `Treino ${workoutNames[i]}`,
             exercises: [
               {
-                name: "Exercício abdominal completo",
-                target: "reto abdominal",
-                recurrence: "Alta",
+                name: "Supino reto com barra",
+                target: "peitoral",
                 level: formData.experience_level,
                 alternatives: [
-                  "abdominal completo com braços sobre o peito",
-                  "abdominal completo braços atrás da cabeça",
-                  "abdominal no chão"
+                  "Supino inclinado com halteres",
+                  "Crucifixo na máquina",
+                  "Flexão de braço"
                 ],
-                series: 3,
-                repetitions: "15-20",
-                estimated_time: 5
+                series: 4,
+                repetitions: "8-12",
+                rest_time: 60
               },
               {
-                name: "Exercício tríceps na polia com corda",
-                target: "tríceps",
-                recurrence: "Alta",
+                name: "Crucifixo com halteres",
+                target: "peitoral",
                 level: formData.experience_level,
                 alternatives: [
-                  "tríceps na polia barra reta",
-                  "tríceps francês com halteres",
-                  "mergulho no banco"
+                  "Crucifixo na máquina",
+                  "Crossover",
+                  "Flexão de braço"
                 ],
                 series: 3,
                 repetitions: "10-12",
-                estimated_time: 6
+                rest_time: 45
+              },
+              {
+                name: "Tríceps corda",
+                target: "tríceps",
+                level: formData.experience_level,
+                alternatives: [
+                  "Tríceps francês",
+                  "Tríceps testa",
+                  "Mergulho no banco"
+                ],
+                series: 3,
+                repetitions: "12-15",
+                rest_time: 45
               }
             ]
           });
@@ -103,30 +114,41 @@ function App() {
               {
                 name: "Puxada frontal",
                 target: "costas",
-                recurrence: "Alta",
                 level: formData.experience_level,
                 alternatives: [
-                  "remada baixa",
-                  "remada curvada",
-                  "pull down"
+                  "Remada curvada",
+                  "Puxada alta",
+                  "Remada unilateral"
                 ],
-                series: 4,
-                repetitions: "10-12",
-                estimated_time: 7
+                series: 3,
+                repetitions: "10-15",
+                rest_time: 60
               },
               {
-                name: "Agachamento livre",
-                target: "quadríceps",
-                recurrence: "Alta",
+                name: "Remada baixa",
+                target: "costas",
                 level: formData.experience_level,
                 alternatives: [
-                  "leg press",
-                  "cadeira extensora",
-                  "agachamento sumô"
+                  "Remada curvada",
+                  "Remada cavalinho",
+                  "Pull down"
                 ],
-                series: 4,
-                repetitions: "8-12",
-                estimated_time: 8
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
+              },
+              {
+                name: "Rosca direta",
+                target: "bíceps",
+                level: formData.experience_level,
+                alternatives: [
+                  "Rosca alternada",
+                  "Rosca martelo",
+                  "Rosca scott"
+                ],
+                series: 3,
+                repetitions: "10-12",
+                rest_time: 45
               }
             ]
           });
@@ -135,32 +157,43 @@ function App() {
             name: `Treino ${workoutNames[i]}`,
             exercises: [
               {
-                name: "Desenvolvimento com halteres",
-                target: "ombros",
-                recurrence: "Alta",
+                name: "Agachamento livre",
+                target: "quadríceps",
                 level: formData.experience_level,
                 alternatives: [
-                  "elevação lateral",
-                  "desenvolvimento máquina",
-                  "elevação frontal"
+                  "Leg press",
+                  "Agachamento sumô",
+                  "Cadeira extensora"
+                ],
+                series: 4,
+                repetitions: "10-12",
+                rest_time: 60
+              },
+              {
+                name: "Stiff",
+                target: "posterior de coxa",
+                level: formData.experience_level,
+                alternatives: [
+                  "Mesa flexora",
+                  "Leg curl",
+                  "Cadeira flexora"
                 ],
                 series: 3,
                 repetitions: "10-12",
-                estimated_time: 6
+                rest_time: 45
               },
               {
-                name: "Rosca direta",
-                target: "bíceps",
-                recurrence: "Alta",
+                name: "Desenvolvimento com halteres",
+                target: "ombros",
                 level: formData.experience_level,
                 alternatives: [
-                  "rosca alternada",
-                  "rosca martelo",
-                  "rosca scott"
+                  "Elevação lateral",
+                  "Desenvolvimento máquina",
+                  "Crucifixo inverso"
                 ],
                 series: 3,
-                repetitions: "10-15",
-                estimated_time: 5
+                repetitions: "10-12",
+                rest_time: 45
               }
             ]
           });
@@ -417,9 +450,6 @@ function App() {
                               <CardHeader className="bg-gray-50 pb-2">
                                 <CardTitle className="text-lg text-indigo-700">{exercise.name}</CardTitle>
                                 <div className="flex flex-wrap gap-2 text-sm">
-                                  <span className="bg-indigo-100 text-indigo-800 px-2 py-1 rounded-full">
-                                    Recorrência: {exercise.recurrence}
-                                  </span>
                                   <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
                                     Alvo: {exercise.target}
                                   </span>
@@ -433,7 +463,7 @@ function App() {
                                     Repetições: {exercise.repetitions || "12-15"}
                                   </span>
                                   <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
-                                    Tempo: {exercise.estimated_time || 5} min
+                                    Descanso: {exercise.rest_time || 60} seg
                                   </span>
                                 </div>
                               </CardHeader>
