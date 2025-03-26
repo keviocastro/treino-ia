@@ -3,7 +3,7 @@ import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select'
 import { Slider } from './components/ui/slider'
-import { Dumbbell, Activity, Clock } from 'lucide-react'
+import { Dumbbell, Activity, Clock, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
 
 function App() {
@@ -278,7 +278,12 @@ function App() {
                   onClick={generateTrainingPlan}
                   disabled={loading}
                 >
-                  {loading ? 'Gerando...' : 'Obter Ficha de Treino'}
+                  {loading ? (
+                    <span className="flex items-center justify-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Gerando...
+                    </span>
+                  ) : 'Obter Ficha de Treino'}
                 </Button>
               </CardContent>
             </Card>
