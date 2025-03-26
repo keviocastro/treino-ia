@@ -58,144 +58,301 @@ function App() {
     } catch (error) {
       console.error('Erro:', error)
       
+      const getExercisesByLevel = (level: string): number => {
+        if (level === "Avançado") return 6;
+        if (level === "Intermediário") return 5;
+        return 3; // Iniciante
+      };
+      
       const fallbackWorkouts = [];
       const workoutNames = ["A", "B", "C", "D", "E", "F", "G"];
+      const exercisesCount = getExercisesByLevel(formData.experience_level);
       
       for (let i = 0; i < Math.min(formData.training_days, workoutNames.length); i++) {
         if (i === 0) {
+          const exercises = [
+            {
+              name: "Supino reto com barra",
+              target: "peitoral",
+              level: formData.experience_level,
+              alternatives: [
+                "Supino inclinado com halteres",
+                "Crucifixo na máquina",
+                "Flexão de braço"
+              ],
+              series: 4,
+              repetitions: "8-12",
+              rest_time: 60
+            },
+            {
+              name: "Crucifixo com halteres",
+              target: "peitoral",
+              level: formData.experience_level,
+              alternatives: [
+                "Crucifixo na máquina",
+                "Crossover",
+                "Flexão de braço"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            },
+            {
+              name: "Tríceps corda",
+              target: "tríceps",
+              level: formData.experience_level,
+              alternatives: [
+                "Tríceps francês",
+                "Tríceps testa",
+                "Mergulho no banco"
+              ],
+              series: 3,
+              repetitions: "12-15",
+              rest_time: 45
+            }
+          ];
+          
+          if (exercisesCount > 3) {
+            exercises.push({
+              name: "Supino inclinado",
+              target: "peitoral superior",
+              level: formData.experience_level,
+              alternatives: [
+                "Supino inclinado com halteres",
+                "Flexão de braço inclinada",
+                "Máquina de supino inclinado"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 60
+            });
+          }
+          
+          if (exercisesCount > 4) {
+            exercises.push({
+              name: "Tríceps francês",
+              target: "tríceps",
+              level: formData.experience_level,
+              alternatives: [
+                "Tríceps testa",
+                "Tríceps coice",
+                "Fundos no banco"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            });
+          }
+          
+          if (exercisesCount > 5) {
+            exercises.push({
+              name: "Peck deck",
+              target: "peitoral",
+              level: formData.experience_level,
+              alternatives: [
+                "Crossover",
+                "Crucifixo com cabos",
+                "Push-up"
+              ],
+              series: 3,
+              repetitions: "12-15",
+              rest_time: 45
+            });
+          }
+          
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: [
-              {
-                name: "Supino reto com barra",
-                target: "peitoral",
-                level: formData.experience_level,
-                alternatives: [
-                  "Supino inclinado com halteres",
-                  "Crucifixo na máquina",
-                  "Flexão de braço"
-                ],
-                series: 4,
-                repetitions: "8-12",
-                rest_time: 60
-              },
-              {
-                name: "Crucifixo com halteres",
-                target: "peitoral",
-                level: formData.experience_level,
-                alternatives: [
-                  "Crucifixo na máquina",
-                  "Crossover",
-                  "Flexão de braço"
-                ],
-                series: 3,
-                repetitions: "10-12",
-                rest_time: 45
-              },
-              {
-                name: "Tríceps corda",
-                target: "tríceps",
-                level: formData.experience_level,
-                alternatives: [
-                  "Tríceps francês",
-                  "Tríceps testa",
-                  "Mergulho no banco"
-                ],
-                series: 3,
-                repetitions: "12-15",
-                rest_time: 45
-              }
-            ]
+            exercises: exercises.slice(0, exercisesCount)
           });
         } else if (i === 1) {
+          const exercises = [
+            {
+              name: "Puxada frontal",
+              target: "costas",
+              level: formData.experience_level,
+              alternatives: [
+                "Remada curvada",
+                "Puxada alta",
+                "Remada unilateral"
+              ],
+              series: 3,
+              repetitions: "10-15",
+              rest_time: 60
+            },
+            {
+              name: "Remada baixa",
+              target: "costas",
+              level: formData.experience_level,
+              alternatives: [
+                "Remada curvada",
+                "Remada cavalinho",
+                "Pull down"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            },
+            {
+              name: "Rosca direta",
+              target: "bíceps",
+              level: formData.experience_level,
+              alternatives: [
+                "Rosca alternada",
+                "Rosca martelo",
+                "Rosca scott"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            }
+          ];
+          
+          if (exercisesCount > 3) {
+            exercises.push({
+              name: "Puxada aberta",
+              target: "dorsal",
+              level: formData.experience_level,
+              alternatives: [
+                "Puxada triângulo",
+                "Puxada pulley",
+                "Barra fixa"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 60
+            });
+          }
+          
+          if (exercisesCount > 4) {
+            exercises.push({
+              name: "Rosca martelo",
+              target: "bíceps e braquial",
+              level: formData.experience_level,
+              alternatives: [
+                "Rosca 21",
+                "Rosca scott",
+                "Rosca concentrada"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            });
+          }
+          
+          if (exercisesCount > 5) {
+            exercises.push({
+              name: "Pull-over",
+              target: "dorsal e serrátil",
+              level: formData.experience_level,
+              alternatives: [
+                "Pull-over com halter",
+                "Pulldown",
+                "Remada alta"
+              ],
+              series: 3,
+              repetitions: "12-15",
+              rest_time: 45
+            });
+          }
+          
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: [
-              {
-                name: "Puxada frontal",
-                target: "costas",
-                level: formData.experience_level,
-                alternatives: [
-                  "Remada curvada",
-                  "Puxada alta",
-                  "Remada unilateral"
-                ],
-                series: 3,
-                repetitions: "10-15",
-                rest_time: 60
-              },
-              {
-                name: "Remada baixa",
-                target: "costas",
-                level: formData.experience_level,
-                alternatives: [
-                  "Remada curvada",
-                  "Remada cavalinho",
-                  "Pull down"
-                ],
-                series: 3,
-                repetitions: "10-12",
-                rest_time: 45
-              },
-              {
-                name: "Rosca direta",
-                target: "bíceps",
-                level: formData.experience_level,
-                alternatives: [
-                  "Rosca alternada",
-                  "Rosca martelo",
-                  "Rosca scott"
-                ],
-                series: 3,
-                repetitions: "10-12",
-                rest_time: 45
-              }
-            ]
+            exercises: exercises.slice(0, exercisesCount)
           });
         } else {
+          const exercises = [
+            {
+              name: "Agachamento livre",
+              target: "quadríceps",
+              level: formData.experience_level,
+              alternatives: [
+                "Leg press",
+                "Agachamento sumô",
+                "Cadeira extensora"
+              ],
+              series: 4,
+              repetitions: "10-12",
+              rest_time: 60
+            },
+            {
+              name: "Stiff",
+              target: "posterior de coxa",
+              level: formData.experience_level,
+              alternatives: [
+                "Mesa flexora",
+                "Leg curl",
+                "Cadeira flexora"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            },
+            {
+              name: "Desenvolvimento com halteres",
+              target: "ombros",
+              level: formData.experience_level,
+              alternatives: [
+                "Elevação lateral",
+                "Desenvolvimento máquina",
+                "Crucifixo inverso"
+              ],
+              series: 3,
+              repetitions: "10-12",
+              rest_time: 45
+            }
+          ];
+          
+          if (exercisesCount > 3) {
+            exercises.push({
+              name: "Elevação lateral",
+              target: "deltoide lateral",
+              level: formData.experience_level,
+              alternatives: [
+                "Elevação frontal",
+                "Pássaro",
+                "Elevação lateral na máquina"
+              ],
+              series: 3,
+              repetitions: "12-15",
+              rest_time: 45
+            });
+          }
+          
+          if (exercisesCount > 4) {
+            exercises.push({
+              name: "Panturrilha em pé",
+              target: "gastrocnêmio",
+              level: formData.experience_level,
+              alternatives: [
+                "Panturrilha sentado",
+                "Elevação de panturrilha no leg press",
+                "Saltos"
+              ],
+              series: 4,
+              repetitions: "15-20",
+              rest_time: 30
+            });
+          }
+          
+          if (exercisesCount > 5) {
+            exercises.push({
+              name: "Crucifixo inverso",
+              target: "deltoide posterior",
+              level: formData.experience_level,
+              alternatives: [
+                "Pássaro",
+                "Face pull",
+                "Remada alta"
+              ],
+              series: 3,
+              repetitions: "12-15",
+              rest_time: 45
+            });
+          }
+          
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: [
-              {
-                name: "Agachamento livre",
-                target: "quadríceps",
-                level: formData.experience_level,
-                alternatives: [
-                  "Leg press",
-                  "Agachamento sumô",
-                  "Cadeira extensora"
-                ],
-                series: 4,
-                repetitions: "10-12",
-                rest_time: 60
-              },
-              {
-                name: "Stiff",
-                target: "posterior de coxa",
-                level: formData.experience_level,
-                alternatives: [
-                  "Mesa flexora",
-                  "Leg curl",
-                  "Cadeira flexora"
-                ],
-                series: 3,
-                repetitions: "10-12",
-                rest_time: 45
-              },
-              {
-                name: "Desenvolvimento com halteres",
-                target: "ombros",
-                level: formData.experience_level,
-                alternatives: [
-                  "Elevação lateral",
-                  "Desenvolvimento máquina",
-                  "Crucifixo inverso"
-                ],
-                series: 3,
-                repetitions: "10-12",
-                rest_time: 45
-              }
-            ]
+            exercises: exercises.slice(0, exercisesCount)
           });
         }
       }
