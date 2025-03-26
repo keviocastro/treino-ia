@@ -162,7 +162,7 @@ function App() {
           
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises.slice(0, exercisesCount)
+            exercises: exercises
           });
         } else if (i === 1) {
           const exercises = [
@@ -257,7 +257,7 @@ function App() {
           
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises.slice(0, exercisesCount)
+            exercises: exercises
           });
         } else {
           const exercises = [
@@ -352,7 +352,7 @@ function App() {
           
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises.slice(0, exercisesCount)
+            exercises: exercises
           });
         }
       }
