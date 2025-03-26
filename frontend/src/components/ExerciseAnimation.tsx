@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Lottie from 'lottie-react';
 
 import benchPressAnimation from '../assets/exercises/bench-press.json';
@@ -17,6 +17,10 @@ const animationMap: Record<string, any> = {
   'puxada frontal': puxadaFrontalAnimation,
   'abdominal': abdominalAnimation,
   'exercício abdominal completo': abdominalAnimation,
+  'crucifixo com halteres': benchPressAnimation, // Fallback to bench press for now
+  'rosca direta': benchPressAnimation, // Fallback to bench press for now
+  'stiff': squatAnimation, // Fallback to squat for now
+  'desenvolvimento com halteres': benchPressAnimation, // Fallback to bench press for now
 };
 
 const defaultAnimation = benchPressAnimation;
@@ -32,30 +36,66 @@ const ExerciseAnimation: React.FC<ExerciseAnimationProps> = ({
   width = 200, 
   height = 200 
 }) => {
-  const getAnimation = () => {
-    const lowerCaseName = exerciseName.toLowerCase();
-    
-    if (animationMap[lowerCaseName]) {
-      return animationMap[lowerCaseName];
-    }
-    
-    for (const [key, animation] of Object.entries(animationMap)) {
-      if (lowerCaseName.includes(key) || key.includes(lowerCaseName)) {
-        return animation;
+  const [animationData, setAnimationData] = useState<any>(defaultAnimation);
+  
+  useEffect(() => {
+    try {
+      const lowerCaseName = exerciseName.toLowerCase();
+      console.log(`ExerciseAnimation: Rendering for "${lowerCaseName}"`);
+      
+      if (animationMap[lowerCaseName]) {
+        console.log(`ExerciseAnimation: Direct match found for "${lowerCaseName}"`);
+        setAnimationData(animationMap[lowerCaseName]);
+        return;
       }
+      
+      for (const [key, animation] of Object.entries(animationMap)) {
+        if (lowerCaseName.includes(key) || key.includes(lowerCaseName)) {
+          console.log(`ExerciseAnimation: Partial match found - "${lowerCaseName}" matches "${key}"`);
+          setAnimationData(animation);
+          return;
+        }
+      }
+      
+      console.log(`ExerciseAnimation: No match found, using default animation for "${lowerCaseName}"`);
+      setAnimationData(defaultAnimation);
+    } catch (error) {
+      console.error("Error loading animation:", error);
+      setAnimationData(defaultAnimation);
     }
-    
-    return defaultAnimation;
-  };
+  }, [exerciseName]);
 
   return (
-    <div className="exercise-animation" style={{ width, height }}>
-      <Lottie 
-        animationData={getAnimation()} 
-        loop={true} 
-        autoplay={true}
-        style={{ width: '100%', height: '100%' }}
-      />
+    <div className="exercise-animation" style={{ 
+      width, 
+      height, 
+      border: '1px solid #e5e7eb', 
+      borderRadius: '8px', 
+      padding: '8px', 
+      backgroundColor: '#f9fafb',
+      overflow: 'hidden'
+    }}>
+      {animationData ? (
+        <Lottie 
+          animationData={animationData} 
+          loop={true} 
+          autoplay={true}
+          style={{ width: '100%', height: '100%' }}
+          rendererSettings={{
+            preserveAspectRatio: 'xMidYMid slice'
+          }}
+        />
+      ) : (
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          width: '100%'
+        }}>
+          Carregando animação...
+        </div>
+      )}
     </div>
   );
 };
