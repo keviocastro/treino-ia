@@ -31,6 +31,9 @@ class Exercise(BaseModel):
     recurrence: str
     level: str
     alternatives: List[str]
+    series: Optional[int] = 3
+    repetitions: Optional[str] = "12-15"
+    estimated_time: Optional[int] = 5  # em minutos
 
 class Workout(BaseModel):
     name: str
@@ -79,6 +82,9 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
         - Recorrência (Alta, Média, Baixa)
         - Nível de dificuldade
         - 3 exercícios alternativos
+        - Número de séries (normalmente entre 3-5)
+        - Número de repetições (ex: "8-12", "12-15", "15-20")
+        - Tempo estimado para completar o exercício (em minutos)
         
         Responda apenas com um JSON no seguinte formato:
         {{
@@ -91,7 +97,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                             "target": "grupo muscular",
                             "recurrence": "Alta/Média/Baixa",
                             "level": "Iniciante/Intermediário/Avançado",
-                            "alternatives": ["alternativa 1", "alternativa 2", "alternativa 3"]
+                            "alternatives": ["alternativa 1", "alternativa 2", "alternativa 3"],
+                            "series": 3,
+                            "repetitions": "12-15",
+                            "estimated_time": 5
                         }}
                     ]
                 }}
@@ -144,7 +153,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Supino inclinado com halteres",
                                     "Crucifixo na máquina",
                                     "Flexão de braço"
-                                ]
+                                ],
+                                series=4,
+                                repetitions="8-12",
+                                estimated_time=8
                             ),
                             Exercise(
                                 name="Agachamento livre",
@@ -155,7 +167,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Leg press",
                                     "Agachamento sumô",
                                     "Cadeira extensora"
-                                ]
+                                ],
+                                series=4,
+                                repetitions="10-12",
+                                estimated_time=10
                             )
                         ]
                     )
@@ -174,7 +189,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Remada curvada",
                                     "Puxada alta",
                                     "Remada unilateral"
-                                ]
+                                ],
+                                series=3,
+                                repetitions="10-15",
+                                estimated_time=7
                             ),
                             Exercise(
                                 name="Desenvolvimento com halteres",
@@ -185,7 +203,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Elevação lateral",
                                     "Desenvolvimento máquina",
                                     "Crucifixo inverso"
-                                ]
+                                ],
+                                series=3,
+                                repetitions="10-12",
+                                estimated_time=6
                             )
                         ]
                     )
@@ -204,7 +225,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Rosca alternada",
                                     "Rosca martelo",
                                     "Rosca scott"
-                                ]
+                                ],
+                                series=3,
+                                repetitions="10-15",
+                                estimated_time=5
                             ),
                             Exercise(
                                 name="Tríceps corda",
@@ -215,7 +239,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Tríceps francês",
                                     "Tríceps testa",
                                     "Mergulho no banco"
-                                ]
+                                ],
+                                series=3,
+                                repetitions="12-15",
+                                estimated_time=5
                             ),
                             Exercise(
                                 name="Abdominal infra",
@@ -226,7 +253,10 @@ def generate_training_plan_with_ai(request: TrainingPlanRequest) -> TrainingPlan
                                     "Prancha",
                                     "Abdominal crunch",
                                     "Elevação de pernas"
-                                ]
+                                ],
+                                series=3,
+                                repetitions="15-20",
+                                estimated_time=4
                             )
                         ]
                     )

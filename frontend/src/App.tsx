@@ -75,7 +75,10 @@ function App() {
                   "abdominal completo com braços sobre o peito",
                   "abdominal completo braços atrás da cabeça",
                   "abdominal no chão"
-                ]
+                ],
+                series: 3,
+                repetitions: "15-20",
+                estimated_time: 5
               },
               {
                 name: "Exercício tríceps na polia com corda",
@@ -86,7 +89,10 @@ function App() {
                   "tríceps na polia barra reta",
                   "tríceps francês com halteres",
                   "mergulho no banco"
-                ]
+                ],
+                series: 3,
+                repetitions: "10-12",
+                estimated_time: 6
               }
             ]
           });
@@ -103,7 +109,10 @@ function App() {
                   "remada baixa",
                   "remada curvada",
                   "pull down"
-                ]
+                ],
+                series: 4,
+                repetitions: "10-12",
+                estimated_time: 7
               },
               {
                 name: "Agachamento livre",
@@ -114,7 +123,10 @@ function App() {
                   "leg press",
                   "cadeira extensora",
                   "agachamento sumô"
-                ]
+                ],
+                series: 4,
+                repetitions: "8-12",
+                estimated_time: 8
               }
             ]
           });
@@ -131,7 +143,10 @@ function App() {
                   "elevação lateral",
                   "desenvolvimento máquina",
                   "elevação frontal"
-                ]
+                ],
+                series: 3,
+                repetitions: "10-12",
+                estimated_time: 6
               },
               {
                 name: "Rosca direta",
@@ -142,7 +157,10 @@ function App() {
                   "rosca alternada",
                   "rosca martelo",
                   "rosca scott"
-                ]
+                ],
+                series: 3,
+                repetitions: "10-15",
+                estimated_time: 5
               }
             ]
           });
@@ -407,6 +425,15 @@ function App() {
                                   </span>
                                   <span className="bg-green-100 text-green-800 px-2 py-1 rounded-full">
                                     Nível: {exercise.level}
+                                  </span>
+                                  <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                    Séries: {exercise.series || 3}
+                                  </span>
+                                  <span className="bg-pink-100 text-pink-800 px-2 py-1 rounded-full">
+                                    Repetições: {exercise.repetitions || "12-15"}
+                                  </span>
+                                  <span className="bg-amber-100 text-amber-800 px-2 py-1 rounded-full">
+                                    Tempo: {exercise.estimated_time || 5} min
                                   </span>
                                 </div>
                               </CardHeader>
