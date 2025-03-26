@@ -3,8 +3,10 @@ import { Button } from './components/ui/button'
 import { Input } from './components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './components/ui/select'
 import { Slider } from './components/ui/slider'
-import { Dumbbell, Activity, Clock, Loader2 } from 'lucide-react'
+import { Dumbbell, Activity, Clock } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
+import Lottie from 'lottie-react'
+import dumbbellAnimation from './assets/dumbbell-animation.json'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -395,7 +397,9 @@ function App() {
                 >
                   {loading ? (
                     <span className="flex items-center justify-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <div className="w-8 h-8">
+                        <Lottie animationData={dumbbellAnimation} loop={true} />
+                      </div>
                       Gerando...
                     </span>
                   ) : 'Obter Ficha de Treino'}
