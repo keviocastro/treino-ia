@@ -57,16 +57,20 @@ function App() {
       setTrainingPlan(data)
     } catch (error) {
       console.error('Erro:', error)
-      setTrainingPlan({
-        workouts: [
-          {
-            name: "Treino A",
+      
+      const fallbackWorkouts = [];
+      const workoutNames = ["A", "B", "C", "D", "E", "F", "G"];
+      
+      for (let i = 0; i < Math.min(formData.training_days, workoutNames.length); i++) {
+        if (i === 0) {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
             exercises: [
               {
                 name: "Exercício abdominal completo",
                 target: "reto abdominal",
                 recurrence: "Alta",
-                level: "Iniciante",
+                level: formData.experience_level,
                 alternatives: [
                   "abdominal completo com braços sobre o peito",
                   "abdominal completo braços atrás da cabeça",
@@ -77,7 +81,7 @@ function App() {
                 name: "Exercício tríceps na polia com corda",
                 target: "tríceps",
                 recurrence: "Alta",
-                level: "Iniciante",
+                level: formData.experience_level,
                 alternatives: [
                   "tríceps na polia barra reta",
                   "tríceps francês com halteres",
@@ -85,9 +89,69 @@ function App() {
                 ]
               }
             ]
-          }
-        ]
-      })
+          });
+        } else if (i === 1) {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
+            exercises: [
+              {
+                name: "Puxada frontal",
+                target: "costas",
+                recurrence: "Alta",
+                level: formData.experience_level,
+                alternatives: [
+                  "remada baixa",
+                  "remada curvada",
+                  "pull down"
+                ]
+              },
+              {
+                name: "Agachamento livre",
+                target: "quadríceps",
+                recurrence: "Alta",
+                level: formData.experience_level,
+                alternatives: [
+                  "leg press",
+                  "cadeira extensora",
+                  "agachamento sumô"
+                ]
+              }
+            ]
+          });
+        } else {
+          fallbackWorkouts.push({
+            name: `Treino ${workoutNames[i]}`,
+            exercises: [
+              {
+                name: "Desenvolvimento com halteres",
+                target: "ombros",
+                recurrence: "Alta",
+                level: formData.experience_level,
+                alternatives: [
+                  "elevação lateral",
+                  "desenvolvimento máquina",
+                  "elevação frontal"
+                ]
+              },
+              {
+                name: "Rosca direta",
+                target: "bíceps",
+                recurrence: "Alta",
+                level: formData.experience_level,
+                alternatives: [
+                  "rosca alternada",
+                  "rosca martelo",
+                  "rosca scott"
+                ]
+              }
+            ]
+          });
+        }
+      }
+      
+      setTrainingPlan({
+        workouts: fallbackWorkouts
+      });
     } finally {
       setLoading(false)
     }
