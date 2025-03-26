@@ -30,7 +30,8 @@ function App() {
   const generateTrainingPlan = async () => {
     setLoading(true)
     try {
-      const response = await fetch('/api/generate-training-plan', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+      const response = await fetch(`${apiUrl}/api/generate-training-plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
