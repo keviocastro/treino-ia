@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "treino-ia-api"
+version = "0.1.0"
+description = "API para gerar treinos utilizando IA"
+authors = ["Devin AI <devin-ai-integration[bot]@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.110.0"
+uvicorn = "^0.29.0"
+pydantic = "^2.6.3"
+openai = "^1.12.0"
+python-dotenv = "^1.0.1"
+python-multipart = "^0.0.9"
+pydantic-settings = "^2.2.1"
+langchain = "^0.1.12"
+langchain-openai = "^0.0.8"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.0.0"
+black = "^24.2.0"
+isort = "^5.13.2"
+flake8 = "^7.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
