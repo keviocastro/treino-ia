@@ -160,9 +160,10 @@ function App() {
             });
           }
           
+          const filteredExercises = exercises.slice(0, exercisesCount);
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises
+            exercises: filteredExercises
           });
         } else if (i === 1) {
           const exercises = [
@@ -255,9 +256,10 @@ function App() {
             });
           }
           
+          const filteredExercises = exercises.slice(0, exercisesCount);
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises
+            exercises: filteredExercises
           });
         } else {
           const exercises = [
@@ -350,9 +352,10 @@ function App() {
             });
           }
           
+          const filteredExercises = exercises.slice(0, exercisesCount);
           fallbackWorkouts.push({
             name: `Treino ${workoutNames[i]}`,
-            exercises: exercises
+            exercises: filteredExercises
           });
         }
       }
