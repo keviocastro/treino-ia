@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Slider } from './components/ui/slider'
 import { Dumbbell, Activity, Clock, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
-import ExerciseAnimation from './components/ExerciseAnimation'
+import ExerciseGifImage from './components/ExerciseGifImage'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -628,7 +628,7 @@ function App() {
                               <CardContent className="pt-4">
                                 <div className="flex flex-col md:flex-row gap-6">
                                   <div className="flex justify-center md:w-1/3">
-                                    <ExerciseAnimation exerciseName={exercise.name} width={200} height={200} />
+                                    <ExerciseGifImage exerciseName={exercise.name} width={200} height={200} />
                                   </div>
                                   <div className="md:w-2/3">
                                     <h4 className="font-medium text-gray-800 mb-2">Alternativas:</h4>
