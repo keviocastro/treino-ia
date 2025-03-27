@@ -5,8 +5,12 @@ WORKDIR /app
 COPY package*.json ./
 
 RUN npm install
+RUN npm install lottie-react
 
 COPY . .
+
+# Ensure proper permissions for node_modules
+RUN chmod -R 777 /app/node_modules
 
 EXPOSE 5173
 

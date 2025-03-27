@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Slider } from './components/ui/slider'
 import { Dumbbell, Activity, Clock, Loader2 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card'
+import ExerciseAnimation from './components/ExerciseAnimation'
 
 function App() {
   const [loading, setLoading] = useState(false)
@@ -625,18 +626,26 @@ function App() {
                                 </div>
                               </CardHeader>
                               <CardContent className="pt-4">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                  {exercise.alternatives && exercise.alternatives.map((alternative: string, altIndex: number) => (
-                                    <div key={altIndex} className="flex items-start gap-2">
-                                      <div className="bg-indigo-100 text-indigo-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
-                                        {altIndex + 1}
-                                      </div>
-                                      <div>
-                                        <p className="font-medium">{`Alternativa ${altIndex + 1}`}</p>
-                                        <p className="text-gray-600">{alternative}</p>
-                                      </div>
+                                <div className="flex flex-col md:flex-row gap-6">
+                                  <div className="flex justify-center md:w-1/3">
+                                    <ExerciseAnimation exerciseName={exercise.name} width={200} height={200} />
+                                  </div>
+                                  <div className="md:w-2/3">
+                                    <h4 className="font-medium text-gray-800 mb-2">Alternativas:</h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                      {exercise.alternatives && exercise.alternatives.map((alternative: string, altIndex: number) => (
+                                        <div key={altIndex} className="flex items-start gap-2">
+                                          <div className="bg-indigo-100 text-indigo-800 rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            {altIndex + 1}
+                                          </div>
+                                          <div>
+                                            <p className="font-medium">{`Alternativa ${altIndex + 1}`}</p>
+                                            <p className="text-gray-600">{alternative}</p>
+                                          </div>
+                                        </div>
+                                      ))}
                                     </div>
-                                  ))}
+                                  </div>
                                 </div>
                               </CardContent>
                             </Card>
